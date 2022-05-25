@@ -95,8 +95,7 @@ class Database {
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        $conn = null;
-  
+        $conn = null; 
     }
 
     private function create_nationalteam_table() {
@@ -127,7 +126,7 @@ class Database {
             $conn = $this->create_connection();
             if (!$this->check_if_table_exist($conn, 'nationalitaet')) {
                 // sql to create table
-                $sql = "CREATE TABLE nationalteam (
+                $sql = "CREATE TABLE nationalitaet (
                     nationalitaet_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                     `name`  VARCHAR(40),
                     kuerzel VARCHAR(11)
@@ -190,7 +189,7 @@ class Database {
         $conn = null;
     }
 
-    private function create_mannschaft_table( {
+    private function create_mannschaft_table() {
             // here: create table if not exist.
             try {
                 $conn = $this->create_connection();
@@ -214,6 +213,15 @@ class Database {
             $conn = null;
     }
 
+    public function prepare_tables() {
+        $this->create_spieler_table();
+        $this->create_nationalteam_table();
+        $this->create_position_table();
+        $this->create_verein_table();
+        $this->create_nationalitaet_table();
+        $this->create_mannschaft_table();
+        return true;
+    }
     
 
     public function prepare_login() {
@@ -282,4 +290,26 @@ class Database {
 
         return false;
     }
+
+
+    public function drop_all() {
+        try {
+            $conn = $this->create_connection();
+
+        /*    $sql = 'ALTER TABLE `order`
+                DROP FOREIGN KEY `FK_order_user`;';
+            $conn->exec($sql); */
+
+            $sql = 'DROP TABLE `user`';
+            $conn->exec($sql);
+
+            $sql = 'DROP TABLE `order`';
+            $conn->exec($sql);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        return false;
+    }
+
 }
+
