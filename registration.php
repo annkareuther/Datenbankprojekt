@@ -36,4 +36,5 @@ if ($registration) {
 $register["success"] = false;
 $register["message"] = "registration nicht erfolgreich.";
 echo json_encode($register);
+
 return false;
